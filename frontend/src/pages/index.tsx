@@ -16,15 +16,20 @@ export default function Home() {
       <Head />
 
       <main>
-        <HeadingComponent as="h2">{SITE_NAME}</HeadingComponent>
-        <Text className='mb-10'>{SITE_DESCRIPTION}</Text>
+        <HeadingComponent />
 
-        <hr />
-        <CreateAuctionCard />
-        <hr />
-        <div className='grid grid-cols-3 gap-4 mt-10'>
-          {auctions.map((k: AuctionCardProps) => <AuctionCard key={k.id} {...k} />)}
+        <div className='w-full h-[661px] absolute' style={{ background: "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);"}} >
+
         </div>
+
+        <div className='px-20'>
+          <hr />
+          <div className='grid grid-cols-3 gap-10 mt-10'>
+            {auctions.map((k: AuctionCardProps) => <AuctionCard key={k.id} {...k} />)}
+          </div>
+
+        </div>
+
 
       </main>
     </>

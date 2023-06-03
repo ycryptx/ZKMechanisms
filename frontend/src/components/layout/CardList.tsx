@@ -22,7 +22,7 @@ export function CardList(props: Props) {
 
   return (
     <Box as="section" className={className}>
-      {props.title && <HeadingComponent as="h3">{props.title}</HeadingComponent>}
+      {props.title}
 
       <Flex direction="column" gap={4}>
         {props.items.map((i, index) => {
@@ -37,10 +37,10 @@ export function CardList(props: Props) {
                   <Flex direction="column">
                     {i.url && (
                       <LinkComponent href={i.url}>
-                        <HeadingComponent as="h4">{i.title}</HeadingComponent>
+                        {/* <HeadingComponent as="h4">{i.title}</HeadingComponent> */}
                       </LinkComponent>
                     )}
-                    {!i.url && <HeadingComponent as="h4">{i.title}</HeadingComponent>}
+                    {/* {!i.url && <HeadingComponent as="h4">{i.title}</HeadingComponent>} */}
 
                     <Text mt={4}>{i.description}</Text>
                   </Flex>
