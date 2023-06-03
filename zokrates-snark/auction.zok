@@ -1,0 +1,9 @@
+import "hashes/sha256/512bitPacked" as sha256packed;
+
+def main(public field bid, private field a, private field b, private field c, private field d) {
+    field[2] h = sha256packed([a, b, c, d]);
+    assert(h[0] == 299036838264209159718726875650047068988);
+    assert(h[1] == 236082706611383708186318918345937359012);
+    assert(d >= bid);
+    return;
+}

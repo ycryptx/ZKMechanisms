@@ -2,10 +2,36 @@
 pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
+
+interface IVerifier {    
+    struct G1Point {
+        uint X;
+        uint Y;
+    }
+
+    struct G2Point {
+        uint[2] X;
+        uint[2] Y;
+    }
+
+    // struct Pairing {
+    //     G1Point G1Point;
+    //     G2Point G2Point;
+    // }
+
+    struct Proof {
+        G1Point a;
+        G2Point b;
+        G1Point c;
+    }
+
+    function verifyTx(Proof memory, uint[2] memory) external returns (bool);
+}
+
 contract AuctionFactory {
     address public owner;
     ERC721 public nftContract;
-    mapping(uint256 => MyAuction) public auctions;
+    mapping(uint256 => Auction) public auctions;
     uint256[] public allTokenIds;
 
     constructor(address _nftContract) {
@@ -15,107 +41,81 @@ contract AuctionFactory {
 
     function createAuction(uint256 _tokenId) public {
         require(msg.sender == owner, "Only the owner can create auctions");
-        require(auctions[_tokenId] == MyAuction(address(0)), "An auction for this NFT already exists");
-        MyAuction newAuction = new MyAuction(address(nftContract), _tokenId);
+        require(auctions[_tokenId] == Auction(address(0)), "An auction for this NFT already exists");
+        Auction newAuction = new Auction(address(nftContract), address(0), _tokenId); // TODO: change to verifier contract address
         auctions[_tokenId] = newAuction;
         allTokenIds.push(_tokenId);
     }
 
-    function getAllAuctions() public view returns (MyAuction[] memory) {
-        MyAuction[] memory allAuctions = new MyAuction[](allTokenIds.length);
-        for (uint256 i = 0; i < allTokenIds.length; i++) {
-            allAuctions[i] = auctions[allTokenIds[i]];
-        }
-        return allAuctions;
-    }
 }
 
 contract Auction {
     address public owner;
+    IVerifier public verifier;
     ERC721 public nftContract;
     uint256 public tokenId;
     uint256 public mechanismCommitment;
     bool public auctionClosed;
-    address[] public bidders;
-    address public highestBidder; // TODO: remove
-    uint256 public highestBid; // TODO: remove
-    uint256[] public bids;
+    mapping(address => uint) bids;
+    address[] orderOfBids;
+    // TODO: remove below
+    address highestBidder;
+    uint highestBid;
 
-    event HighestBidIncreased(address bidder, uint256 amount);
     event AuctionEnded(address winner, uint256 amount);
 
-    constructor(address _nftContract, uint256 _tokenId) {
+    constructor(address _nftContract, address _verifier, uint256 _tokenId) {
         owner = msg.sender;
         nftContract = ERC721(_nftContract);
         tokenId = _tokenId;
+        verifier = IVerifier(_verifier);
+        highestBidder = msg.sender;
+        highestBid = 0;
     }
 
     function commitToMechanism(uint256 _mechanismCommitment) public {
-        require(msg.sender == owner, "Only the owner can set the base price");
+        require(msg.sender == owner, "Only the owner commit to the auction");
         mechanismCommitment = _mechanismCommitment;
     }
 
     function bid() public payable {
         require(!auctionClosed, "Auction already ended");
-        require(msg.value > highestBid, "There already is a higher bid");
+        require(msg.value > 0, "Cannot bid 0 amount");
+        require(bids[msg.sender] == 0, "Cannot bid twice");
+        bids[msg.sender] = msg.value;
+        orderOfBids.push(msg.sender);
 
-        if (highestBid != 0) {
-            payable(highestBidder).transfer(highestBid);
-        }
-        highestBidder = msg.sender;
-        highestBid = msg.value;
-        emit HighestBidIncreased(msg.sender, msg.value);
-
-        if (msg.value >= basePrice) {
-            auctionClosed = true;
-            emit AuctionEnded(highestBidder, highestBid);
-            nftContract.transferFrom(owner, highestBidder, tokenId);
-            payable(owner).transfer(highestBid);
+        // TODO: remove below
+        if (msg.value > highestBid) {
+            highestBidder = msg.sender;
+            highestBid = msg.value;
         }
     }
 
-    function getAllBids() public view returns (address[] memory, uint256[] memory) {
-        uint256[] memory allBids = new uint256[](bids.length);
-        for (uint256 i = 0; i < bidders.length; i++) {
-            allBids[i] = bids[bidders[i]];
-        }
-        return (bidders, allBids);
+    function withdrawBid() public payable {
+        require(auctionClosed, "Can only withdraw after auction closes");
+        require(msg.sender != highestBidder, "Can only withdraw after auction closes");
+        payable(msg.sender).transfer(bids[msg.sender]);
     }
 
-    function maxBid() public view returns (address, uint256) {
-        address maxBidder = address(0);
-        uint256 maxBidAmount = 0;
-        for (uint256 i = 0; i < bidders.length; i++) {
-            if (bids[bidders[i]] > maxBidAmount) {
-                maxBidder = bidders[i];
-                maxBidAmount = bids[bidders[i]];
-            }
-        }
-        return (maxBidder, maxBidAmount);
-    }
-
-    function claimVictory() public payable {
-        require(auctionClosed, "The auction is not over yet");
-        (address maxBidder, uint256 maxBidAmount) = maxBid();
-        require(msg.sender == maxBidder, "You are not the highest bidder");
-        require(msg.value == maxBidAmount, "You need to transfer the exact amount of your bid");
+    function submitOutcomes() public payable {
+        require(msg.sender == owner, "Only the owner can submit outcomes");
 
         nftContract.transferFrom(owner, msg.sender, tokenId);
-        payable(owner).transfer(msg.value);
+        payable(owner).transfer(highestBid);
 
-        for (uint256 i = 0; i < bidders.length; i++) {
-            if (bidders[i] != msg.sender) {
-                payable(bidders[i]).transfer(bids[bidders[i]]);
-            }
-        }
+        auctionClosed = true;
     }
 
-    function submitOutcomes(outcomes: [outcome1, zkproof1,....]) {
-        let i = 0
-        for outcome, zkproof of outcomes {
-            assert Verifier.verify(zkproof, bids[i], mechanismCommitment)
-            i += 1
-        }
+    // // TODO: make submitOutcomes take as input a snark proof and verify the computation of each user's outcome
+    // // pick the first user that has outcome == true
+    // function submitOutcomes() {
+    //     i = 0;
+    //     for outcome, zkproof of outcomes {
+    //         assert verifier.verifyTx(zkproof, bids[i], mechanismCommitment)
+    //         i += 1
+    //     }
 
-    }
+    //     nftContract.transferFrom(owner, highestBidder, tokenId);
+    // }
 }
