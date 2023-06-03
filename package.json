@@ -1,13 +1,14 @@
 {
-  "name": "zkp-app-boilerplate",
+  "name": "zk-mechanism-app",
   "version": "0.1.0",
-  "description": "Boilerplate for zkp application",
+  "description": "Boilerplate for zk mechanism",
   "repository": "https://github.com/wanseob/zkp-app-boilerplate",
   "author": "Wanseob Lim<email@wanseob.com>",
   "workspaces": [
     "app",
     "circuits",
-    "contracts"
+    "contracts",
+    "zk-mechanism"
   ],
   "scripts": {
     "build": "yarn build:circuits && yarn build:contracts",
