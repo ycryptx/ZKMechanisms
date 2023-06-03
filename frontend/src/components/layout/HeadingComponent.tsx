@@ -32,15 +32,15 @@ export function HeadingComponent(props: Props) {
   }, [colorMode]);
 
   return (
-    <div className='w-full p-20' style={style}>
-      <div className='w-3/4 flex flex-col gap-4'>
+    <div className='w-full p-5 pt-20 sm:p-20' style={style}>
+      <div className='w-full sm:w-3/4 flex flex-col gap-4'>
         <Heading
           className='text-5xl font-bold font-inter'
           color={useColorModeValue('#B04BFF', '#FFFFFF')}>
             Welcome to Gabozago.
         </Heading>
         <Text
-          className='font-inter font-thin text-5xl'
+          className='font-inter font-thin text-3xl'
           color={useColorModeValue('#B04BFF', '#FFFFFF')}>
           Explore advanced ZK art auctions and bid for your favorite pieces
         </Text>
