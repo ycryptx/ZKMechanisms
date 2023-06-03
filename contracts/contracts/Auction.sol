@@ -58,7 +58,7 @@ contract Auction {
     bool public auctionClosed;
     mapping(address => uint) bids;
     address[] orderOfBids;
-    // TODO: remove below
+    // TODO: remove below once zk proving added
     address highestBidder;
     uint highestBid;
 
@@ -85,7 +85,7 @@ contract Auction {
         bids[msg.sender] = msg.value;
         orderOfBids.push(msg.sender);
 
-        // TODO: remove below
+        // TODO: remove below once zk proving added
         if (msg.value > highestBid) {
             highestBidder = msg.sender;
             highestBid = msg.value;
