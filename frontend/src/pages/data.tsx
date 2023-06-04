@@ -13,6 +13,49 @@ import img8 from 'assets/images/img8.png';
 import img9 from 'assets/images/img9.png';
 import img10 from 'assets/images/img10.png';
 
+const IPFS = [
+    {
+        id: '1',
+        ipfs: 'bafybeid2rh4dcckmsstcb5amatadkwfrodimexuahqf2ys6d4wyp63fneq',
+    },
+    {
+        id: '2',
+        ipfs: 'bafybeiffx4maztv6oixm4sp7qlqvrvepeg6qitniixptpbw5gwornqlgy4',
+    },
+    {
+        id: '3',
+        ipfs: 'bafybeieaym44lst7ru64v2shvi347qfev74elvkspozw3okuhohrvdomnu',
+    },
+    {
+        id: '4',
+        ipfs: 'bafybeidzhbkzke4nb3gjs3tnjys2zljnzo6ys7tjegympgwc3gnpzkww34',
+    },
+    {
+        id: '5',
+        ipfs: 'bafybeieb6t4q2viodkmjur4ekifc4rxxjtqqq46rbkqy4fpuv4jhsffg3i',
+    },
+    {
+        id: '6',
+        ipfs: 'bafybeige2mzhboqalbh2cqjtdz6oqxxswcgtu4kcn5c4ern2cyxizam3om',
+    },
+    {
+        id: '7',
+        ipfs: 'bafybeie4f7eczkeatniktn2cqtbs54ckar23dabvypghfslra2vpvwepsm',
+    },
+    {
+        id: '8',
+        ipfs: 'bafybeib2xzktn56apopeekzcwaxu2dmul7rynyaa4b7qgshmu2ky7j32ae',
+    },
+    {
+        id: '9',
+        ipfs: 'bafybeia7ysnj2oakmw7azlkcsxugyhxh3t2gt4c53chcpp5psdsc4iwmv4',
+    },
+    {
+        id: '10',
+        ipfs: 'bafybeibqgtsruwkzyazyzok5aaygd5zmb2bhprlswfykb7stqtkixoqzti',
+    },
+];
+
 export const auctions: AuctionCardProps[] = [
     {
         id: 'r1',
