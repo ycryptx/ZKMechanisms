@@ -8,7 +8,12 @@
     "test": "hardhat test",
     "build": "hardhat compile && tsc -p tsconfig.build.json",
     "hardhat": "hardhat",
-    "compile": "hardhat compile"
+    "compile": "hardhat compile",
+    "deploy:local": "npx hardhat run --network localhost scripts/deploy.js",
+    "deploy:hardhat": "npx hardhat run --network hardhat scripts/deploy.js",
+    "deploy:chiado": "npx hardhat run --network chiado scripts/deploy.js",
+    "deploy:aurora": "npx hardhat run --network aurora_testnet scripts/deploy.js",
+    "deploy:auroraplus": "npx hardhat run --network aurora_plus scripts/deploy.js"
   },
   "main": "dist/typechain/index.js",
   "types": "typechain/index.ts",

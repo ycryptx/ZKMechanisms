@@ -42,7 +42,8 @@ contract AuctionFactory {
     function createAuction(uint256 _tokenId) public {
         require(msg.sender == owner, "Only the owner can create auctions");
         require(auctions[_tokenId] == Auction(address(0)), "An auction for this NFT already exists");
-        Auction newAuction = new Auction(address(nftContract), address(0), _tokenId); // TODO: change to verifier contract address
+        // Auction newAuction = new Auction(address(nftContract), address(0), _tokenId); // TODO: change to verifier contract address
+        Auction newAuction = new Auction(address(nftContract), _tokenId); // TODO: change to verifier contract address
         auctions[_tokenId] = newAuction;
         allTokenIds.push(_tokenId);
     }
@@ -64,11 +65,12 @@ contract Auction {
 
     event AuctionEnded(address winner, uint256 amount);
 
-    constructor(address _nftContract, address _verifier, uint256 _tokenId) {
+    // constructor(address _nftContract, address _verifier, uint256 _tokenId) {
+    constructor(address _nftContract, uint256 _tokenId) {
         owner = msg.sender;
         nftContract = ERC721(_nftContract);
         tokenId = _tokenId;
-        verifier = IVerifier(_verifier);
+        // verifier = IVerifier(_verifier);
         highestBidder = msg.sender;
         highestBid = 0;
     }
