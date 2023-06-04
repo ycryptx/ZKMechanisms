@@ -34,6 +34,8 @@ contract AuctionFactory {
     mapping(uint256 => Auction) public auctions;
     uint256[] public allTokenIds;
 
+    event AuctionCreated(uint256 _tokenId);
+
     constructor(address _nftContract) {
         owner = msg.sender;
         nftContract = ERC721(_nftContract);
@@ -46,6 +48,7 @@ contract AuctionFactory {
         Auction newAuction = new Auction(address(nftContract), _tokenId); // TODO: change to verifier contract address
         auctions[_tokenId] = newAuction;
         allTokenIds.push(_tokenId);
+        emit AuctionCreated(_tokenId);
     }
 
 }
