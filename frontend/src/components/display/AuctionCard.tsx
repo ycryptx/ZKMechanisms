@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const AuctionCard = (props: AuctionCardProps) => {
     return (
-        <div className="card bg-color6 shadow-xl rounded-sm border-white">
+        <div className="card bg-color6 shadow-xl rounded-lg border-white">
             <figure className='w-full h-3/4 border-b-2'>
                 <img src={props.imgSrc} alt="Shoes" className='w-full h-full' />
             </figure>

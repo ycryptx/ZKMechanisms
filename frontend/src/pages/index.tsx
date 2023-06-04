@@ -17,7 +17,7 @@ export default function Home() {
       <main>
         <HeadingComponent />
 
-        <div className='px-20'>
+        <div className='px-5 sm:px-20'>
           <hr />
           <div className='grid grid-cols-1 sm:grid-cols-3 gap-10 mt-10'>
             {auctions.map((k: AuctionCardProps) => <AuctionCard key={k.id} {...k} />)}
