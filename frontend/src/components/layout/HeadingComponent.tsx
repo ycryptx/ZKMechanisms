@@ -11,6 +11,7 @@ interface Props {
 
 const darkBg = {
   background: `url(${headerImage.src})`,
+  backgroundSize: 'cover',
   height: '500px'
 };
 
@@ -24,7 +25,7 @@ export function HeadingComponent(props: Props) {
   const [style, setStyle] = useState<any>(darkBg);
 
   useEffect(() => {
-    if(colorMode === 'dark') {
+    if (colorMode === 'dark') {
       setStyle(darkBg);
     } else {
       setStyle(lightBg);
@@ -32,12 +33,12 @@ export function HeadingComponent(props: Props) {
   }, [colorMode]);
 
   return (
-    <div className='w-full p-5 pt-20 sm:p-20' style={style}>
+    <div className='relative w-full p-5 pt-20 sm:p-20' style={style}>
       <div className='w-full sm:w-3/4 flex flex-col gap-4'>
         <Heading
           className='text-5xl font-bold font-inter'
           color={useColorModeValue('#B04BFF', '#FFFFFF')}>
-            Welcome to Gabozago.
+          Welcome to Gabozago.
         </Heading>
         <Text
           className='font-inter font-thin text-3xl'
@@ -45,6 +46,9 @@ export function HeadingComponent(props: Props) {
           Explore advanced ZK art auctions and bid for your favorite pieces
         </Text>
         <CreateAuctionCard />
+      </div>
+      <div className='w-full h-[100px] absolute left-0 bottom-0 opacity-30'
+        style={{ backgroundImage: "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%)" }} >
       </div>
     </div>
 

@@ -1,7 +1,6 @@
 import { Text } from '@chakra-ui/react'
 import { Head } from 'components/layout/Head'
 import { HeadingComponent } from 'components/layout/HeadingComponent'
-import { LinkComponent } from 'components/layout/LinkComponent'
 
 import { SITE_NAME, SITE_DESCRIPTION } from 'utils/config'
 
@@ -17,10 +16,6 @@ export default function Home() {
 
       <main>
         <HeadingComponent />
-
-        <div className='w-full h-[661px] absolute' style={{ background: "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);"}} >
-
-        </div>
 
         <div className='px-20'>
           <hr />

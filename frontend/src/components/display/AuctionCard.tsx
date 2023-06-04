@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { AuctionCardProps } from 'interfaces/index';
+import Link from 'next/link';
 
 const AuctionCard = (props: AuctionCardProps) => {
     return (
@@ -12,7 +13,9 @@ const AuctionCard = (props: AuctionCardProps) => {
                 <h2 className="card-title ">{props.title}</h2>
                 <p>{props.description}</p>
                 <div className="card-actions justify-center w-full">
-                    <button className="btn btn-primary w-full bg-color2 border-none">Bid now</button>
+                    <Link href={`/bid/${props.id}`} className='w-full'>
+                        <button className="btn btn-primary w-full bg-color2 border-none">Bid now</button>
+                    </Link>
                 </div>
             </div>
         </div>
